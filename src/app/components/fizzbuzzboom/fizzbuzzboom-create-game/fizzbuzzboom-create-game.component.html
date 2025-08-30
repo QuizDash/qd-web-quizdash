@@ -1,0 +1,137 @@
+<span class="answer">{{answer}}</span>
+<span class="alert">{{errorMsg}}</span>
+<span class="info">{{infoMsg}}</span>
+<div *ngIf="!isLoading" class="container-fluid page">
+  <div class="row top-buffer text-right">
+    <div class="col-6 text-center">
+      <h1>Starting Game</h1>
+    </div>
+    <div class="col-6">
+      <h3>SessionId: &nbsp;
+      <input class="form-control-lg" type="text" [ngModel]="sessionId" readonly disabled/></h3>
+    </div>
+  </div>
+
+  <div class="row top-buffer text-right">
+    <div class="col-6 text-center">
+      <h5 class="text-muted">Testing with Multiples of {{fizzMultiple}} (Fizz) and {{buzzMultiple}} (Buzz)</h5>
+    </div>
+  </div>
+  <div *ngIf="isRandomQuestion" class="row top-buffer">
+    <div class="col-6 text-center">
+      <h6 class="text-muted">Using random numbers between 1 and {{randomMaxValue}}</h6>
+    </div>
+  </div>
+
+  <div class="row top-buffer-x2">
+    <div class="col-8">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-9">
+                  <span *ngIf="!targetUser" class="user-label">Ready to start...</span>
+                  <span *ngIf="targetUser" class="user">{{targetUser}}</span>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-8 text-center">
+                  <span *ngIf="questionValue==0" class="test-value">-</span>
+                  <span *ngIf="questionValue > 0" class="test-value">{{questionValue}}</span>
+                </div>
+
+                <div class="col-4 d-grid gap-1">
+                  <button class="btn btn-lg btn-outline-secondary disabled">Fizz</button>
+                  <button class="btn btn-lg btn-outline-secondary disabled">Buzz</button>
+                  <button class="btn btn-lg btn-outline-secondary disabled">Fizz Buzz</button>
+                  <button class="btn btn-lg btn-outline-secondary disabled">Pass</button>
+                </div>
+              </div>
+              <div class="row top-buffer-x2 float-end">
+                <div class="col-12 float-end">
+                  <countdown #cd
+                             [config]="config"
+                             (event)="onCountdownEvent($event)"
+                  ></countdown>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row top-buffer text-end">
+        <div class="col-12">
+          <button *ngIf="users.length < 2 || isStarted" class="btn btn-lg btn-secondary" disabled>Start Game</button>
+          <button *ngIf="users.length > 1 && !isStarted" class="btn btn-lg btn-success" (click)="onStartClick()">Start Game</button>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="col-4">
+      <strong>Joined Users:</strong>
+      <p-listbox [options]="users" optionLabel="nickname" [listStyle]="{'max-height':'250px'}"
+                 emptyMessage="Waiting for users..."></p-listbox>
+
+    </div>
+  </div>
+
+</div>
+
+<p-dialog [(visible)]="showSetSettingsDialog" header="Game options" [modal]="true" [style]="{'width':'400px'}"
+          [modal] = "true" styleClass="p-fluid">
+  <div class="row top-buffer">
+    <div class="col-6">
+      <span class="strong">Fizz Multiple:</span>
+    </div>
+    <div class="col-6">
+      <input type="number" class="form-control" [(ngModel)]="fizzMultiple" id="fizzMultiple"/>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col-6">
+      <span class="strong">Buzz Multiple:</span>
+    </div>
+    <div class="col-6">
+      <input type="number" class="form-control" [(ngModel)]="buzzMultiple" id="buzzMultiple"/>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col-6">
+      <label class="form-check-label" for="isRandomQuestion">Random Questions?</label>
+    </div>
+    <div class="col-6">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="isRandomQuestion" id="isRandomQuestion"/>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col-6">
+      <span class="strong">Max Value?</span>
+    </div>
+    <div class="col-6">
+      <input type="number" class="form-control" [(ngModel)]="randomMaxValue" id="randomMaxValue"/>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col-6">
+      <label class="form-check-label" for="timeLimitSeconds">Answer Time (secs)</label>
+    </div>
+    <div class="col-6">
+      <input type="number" class="form-control" [(ngModel)]="timeLimitSeconds" id="timeLimitSeconds"/>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col-3 d-grid d-md-block ms-auto">
+      <button type="button" class="btn btn-primary btn-block" (click)="createGame()">Create</button>
+    </div>
+  </div>
+
+</p-dialog>
+
+<p-progressSpinner *ngIf="isLoading" class="tbs-center"></p-progressSpinner>
+<p-toast position="center" class="custom-toast"></p-toast>
+<p-confirmDialog header="Warning" icon="pi pi-exclamation-triangle"></p-confirmDialog>

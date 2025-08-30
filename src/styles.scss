@@ -1,0 +1,58 @@
+@import "primeicons/primeicons.css";
+
+body {
+  font-family: sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+
+.top-buffer {
+  padding-top: 1rem;
+}
+
+.top-buffer-x2 {
+  margin-top: 2rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+
+/*--------------------------------------------------------------
+# Pages
+--------------------------------------------------------------*/
+.page {
+  padding-top: 1rem;
+}
+
+.page-title h2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 45px;
+  font-weight: 100;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+
+.separator {
+  color: #626262;
+  font-family: "Roboto", sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  margin-bottom: 30px;
+  text-transform: capitalize;
+}
+
+.guide {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+  color: orangered;
+}
+
+.alert {
+  color: red;
+  font-weight: 100;
+  font-style: italic;
+}

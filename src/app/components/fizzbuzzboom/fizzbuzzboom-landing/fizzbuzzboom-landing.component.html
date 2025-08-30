@@ -1,0 +1,63 @@
+<div class="container">
+  <p-messages></p-messages>
+  <span class="alert">{{errorMsg}}</span>
+  <div class="row top-buffer">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header dark">
+
+          <h2><img src="assets/images/bomb-154456.svg" height="100px">Fizz Buzz Boom</h2>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class=col-12>
+              <h2>What would you like to do?</h2>
+            </div>
+          </div>
+          <div class="row top-buffer">
+            <div class="col-sm-12 col-md-6">
+              <h4>1. Join an existing game?</h4>
+            </div>
+          </div>
+          <div class="row top-buffer">
+            <div class="col-sm-12 col-md-6">
+              <input type="text" class="form-control form-control-lg" placeholder="Enter session token here"
+                     [(ngModel)]="sessionId" id="sessionId"/>
+            </div>
+            <div class="col-3 d-grid">
+              <button type="button" class="btn btn-secondary"  (click)="onSessionEntered()">Join</button>
+            </div>
+          </div>
+
+          <div class="row top-buffer-x2">
+          </div>
+          <!--Logged in-->
+          <div *ngIf="isLoggedIn()" class="row top-buffer-x2">
+            <div class="col-sm-12 col-md-6">
+              <h4>2. Host a team game?</h4>
+            </div>
+            <div class="col-3 d-grid">
+              <a type="button" class="btn btn-primary" role="button" href="#" [routerLink]="'/fizzbuzzboom/new-game'">New Game</a>
+            </div>
+
+          </div>
+          <h4></h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog [(visible)]="showCreateNicknameDialog" header="Choose a nickname" [modal]="true" [style]="{'width':'400px'}"
+          [modal] = "true" styleClass="p-fluid">
+  <div class="row top-buffer">
+    <div class="col-3">
+      <span class="strong">Name:</span>
+    </div>
+    <div class="col-9">
+      <input type="text" class="form-control" [(ngModel)]="nickname" id="nickname"/>
+    </div>
+  </div>
+  <div class="col-3 d-grid d-md-block">
+    <button type="button" class="btn btn-secondary btn-block" (click)="joinGame()">Join</button>
+  </div>
+</p-dialog>

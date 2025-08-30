@@ -1,0 +1,159 @@
+<div class="container">
+  <p-messages></p-messages>
+  <div class="row top-buffer">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header quiz">
+          <h1>
+            <img src="assets/images/fireworks-40954.svg" height="50px"> Arithmetic Quiz
+          </h1>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="!isQuizStarted && !this.isQuizFinished">
+            <div class="row">
+              <div class="col-6">
+                <h4> <p>You will be asked {{questionCount}} questions, and a timed limit to answer each.</p>
+                <p> Please select difficulty options, then click "Go" when you are ready.</p>
+                </h4>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-10 col-12">
+                    <input type="checkbox" class="form-check-input" [(ngModel)]="isAdditionIncluded"
+                           id="isAdditionIncluded" (change)="validateOptions()">
+                    <label class="form-check-label" for="isAdditionIncluded">&nbsp;Addition?</label>
+                  </div>
+                </div>
+                <div class="row top-buffer">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-10 col-12">
+                    <input type="checkbox" class="form-check-input" [(ngModel)]="isSubtractionIncluded"
+                           (change)="validateOptions()" id="isSubtractionIncluded">
+                    <label class="form-check-label" for="isSubtractionIncluded">&nbsp;Subtraction?</label>
+                  </div>
+                </div>
+                <div class="row top-buffer">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-10 col-12">
+                    <input type="checkbox" class="form-check-input"  [(ngModel)]="isMultiplicationIncluded"
+                           id="isMultiplicationIncluded" (change)="validateOptions()">
+                    <label class="form-check-label" for="isMultiplicationIncluded">&nbsp;Multiplication?</label>
+                  </div>
+                </div>
+                <div class="row top-buffer">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-10 col-12">
+                    <input type="checkbox" class="form-check-input"  [(ngModel)]="isDivisionIncluded"
+                           id="isDivisionIncluded" (change)="validateOptions()">
+                    <label class="form-check-label" for="isDivisionIncluded">&nbsp;Division?</label>
+                  </div>
+                </div>
+
+                <div class="row top-buffer">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-4 col-6">
+                    <div class="md-form">
+                      <input type="number" id="form1" [(ngModel)]="timeLimitSecs" class="form-control">
+                      <label for="form1" class="">Time Limit (s)</label>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-6">
+                    <div class="md-form">
+                      <input type="number" id="form2" [(ngModel)]="difficulty" class="form-control">
+                      <label for="form2" class="">Difficulty 1(low) - 7(high)</label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isQuizStarted && !isQuizFinished" class="text-center top-buffer">
+            <button class="btn btn-success sidemargin" (click)="onGoClick()">Go</button>
+          </div>
+
+          <div *ngIf="isQuizStarted" class="card top-buffer">
+            <div class="card-header quiz">
+              <h2>Question {{index + 1}}:</h2>
+            </div>
+            <div class="card-body">
+              <div class="row text-center">
+                <div class="col-2 anumber">
+                  <label>{{questions[index].operand1}}</label>
+                </div>
+                <div class="col-1">
+                  <label class="operand">{{questions[index].operator}}</label>
+                </div>
+                <div class="col-2 text-center anumber">
+                  <label>{{questions[index].operand2}}</label>
+                </div>
+                <div class="col-1">
+                  <label class="operand">=</label>
+                </div>
+                <div class="col-3">
+                  <input #myInput class="form-control" type="number" [(ngModel)]="questions[index].submittedAnswer" >
+                        <!-- (keyup.enter)="onSubmit()">-->
+                </div>
+                <div class="col-2">
+                  <!--<button class="btn btn-primary" (click)="onSubmit()">Submit</button>-->
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              Score: {{score}}
+            </div>
+
+          </div>
+
+          <div *ngIf="isQuizFinished" class="card top-buffer">
+            <div class="card-header quiz">
+              <h2>>Results</h2>
+            </div>
+            <div class="card-body">
+              <table class="table table-responsive-md">
+                <thead>
+                <th>#</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Answered</th>
+                <th>Correct?</th>
+                </thead>
+                <tbody>
+                <tr *ngFor="let q of questions; let i = index">
+                  <td>{{i + 1}}</td>
+                  <td>{{q.operand1}} {{q.operator}} {{q.operand2}}</td>
+                  <td>{{q.answer}}</td>
+                  <td>{{q.submittedAnswer}}</td>
+                  <td>{{q.answer == q.submittedAnswer ? 'Correct': 'Incorrect'}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-9">
+                  <p>You answered {{score}} out of {{questionCount}} correctly.</p>
+                </div>
+                <div class="col-3 text-right">
+                  <button class="btn btn-success" (click)="onGoClick()">Again?</button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
