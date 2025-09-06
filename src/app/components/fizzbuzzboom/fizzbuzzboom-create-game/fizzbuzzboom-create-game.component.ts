@@ -27,7 +27,7 @@ import {CheckboxModule} from "primeng/checkbox";
 })
 export class FizzBuzzBoomCreateGameComponent implements OnInit {
   @ViewChild('cd', { static: false }) public countdown!: CountdownComponent;
-  config: CountdownConfig = { leftTime: 10, demand: true };
+  config: CountdownConfig = { demand: true };
   answer: string = '';
   errorMsg: string = '';
   infoMsg: string = '';
@@ -93,7 +93,7 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
         p => {
           console.log(p);
           self.sessionId = p.sessionId;
-          self.countdown.left = self.timeLimitSeconds + 5;
+          self.config = { leftTime: self.timeLimitSeconds + 2, demand: true };
           this.wsService.connectWithToken(this.sessionId, 'Host').then(x=> {
             this?.wsService?.subject?.subscribe(msg => {
               console.log(msg);

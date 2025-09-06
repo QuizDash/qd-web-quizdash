@@ -64,7 +64,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
         next: s => {
           console.log(s);
           self.session = s;
-          self.countdown.left = self.session.timeLimitSeconds;
+          self.config = { leftTime: self.session.timeLimitSeconds, demand: true };
         },
         error: err => {
           self.errorMsg = 'Invalid session token entered, please try again.'
