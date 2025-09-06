@@ -25,7 +25,7 @@
                      [(ngModel)]="sessionId" id="sessionId"/>
             </div>
             <div class="col-3 d-grid">
-              <button type="button" class="btn btn-secondary"  (click)="onSessionEntered()">Join</button>
+              <button type="button" class="btn btn-secondary"  (click)="onSessionEntered()" [disabled]="isLoading">Join</button>
             </div>
           </div>
 
@@ -58,6 +58,10 @@
     </div>
   </div>
   <div class="col-3 d-grid d-md-block">
-    <button type="button" class="btn btn-secondary btn-block" (click)="joinGame()">Join</button>
+    <button type="button" class="btn btn-secondary btn-block" (click)="joinGame()" [disabled]="isLoading">Join</button>
   </div>
 </p-dialog>
+
+<p-progressSpinner *ngIf="isLoading || isWaiting" class="qd-center"></p-progressSpinner>
+<p-toast position="top-left" class="custom-toast"></p-toast>
+<p-confirmDialog header="Warning" icon="pi pi-exclamation-triangle"></p-confirmDialog>

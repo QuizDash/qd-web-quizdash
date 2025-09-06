@@ -32,6 +32,7 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
   errorMsg: string = '';
   infoMsg: string = '';
   isLoading = false;
+  isWaiting = false;
   sessionId: string = '';
   users: IUserConnected[] = [];
   targetUser: string = '';
@@ -88,14 +89,18 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
   createSession() {
     const self = this;
     console.log(`Fizz: ${this.fizzMultiple}, Buzz: ${this.buzzMultiple}, isRandom: ${this.isRandomQuestion},  Max: ${this.randomMaxValue}`);
+    this.isWaiting = true;
     this.fbbService.createGameSession(this.fizzMultiple, this.buzzMultiple, this.isRandomQuestion, this.randomMaxValue, this.timeLimitSeconds)
       .subscribe(
         p => {
           console.log(p);
+          self.isWaiting = false;
+          self.errorMsg = '';
           self.sessionId = p.sessionId;
           self.config = { leftTime: self.timeLimitSeconds + 2, demand: true };
           this.wsService.connectWithToken(this.sessionId, 'Host').then(x=> {
             this?.wsService?.subject?.subscribe(msg => {
+
               console.log(msg);
               const data = JSON.parse(msg.data);
               console.log(data);
@@ -132,10 +137,14 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
                 });
               }
 
+            },
+            e => {
+              console.log(e);
+              self.errorMsg = e.message;
             })
           });
           self.errorMsg = '';
-          self.isLoading = false;
+          self.isWaiting = false;
         },
         e => {
           self.messageService.add({
@@ -145,7 +154,7 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
             life: 5000
           });
           self.errorMsg = e.message;
-          self.isLoading = false;
+          self.isWaiting = false;
         },
         () => {
         }
@@ -164,10 +173,12 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
         newQuestionValue = self.questionValue + 1;
       }
       this.isStarted = true;
+      self.isWaiting = true;
       this.fbbService.postQuestion(self.sessionId, newQuestionValue)
         .subscribe(
           p => {
             console.log('Sent');
+            self.isWaiting = false;
           },
           e => {
             self.messageService.add({
@@ -177,6 +188,7 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
               life: 5000
             });
             self.errorMsg = e.message;
+            self.isWaiting = false;
           },
           () => {
           }

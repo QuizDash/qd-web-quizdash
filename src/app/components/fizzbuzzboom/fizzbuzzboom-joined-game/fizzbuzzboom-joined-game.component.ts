@@ -30,6 +30,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
   errorMsg: string = '';
   infoMsg: string = '';
   isLoading = false;
+  isWaiting = false;
   sessionId: string = '';
   users: IUserConnected[] = [];
   targetUser: string = '';
@@ -59,15 +60,19 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
     this.sessionId = this.route.snapshot.paramMap.get('sessionId') || '';
     this.myNickname = this.route.snapshot.paramMap.get('nickname') || '';
 
+    this.isLoading = true;
+
     this.fbbService.getGameSession(this.sessionId)
       .subscribe({
         next: s => {
           console.log(s);
           self.session = s;
           self.config = { leftTime: self.session.timeLimitSeconds, demand: true };
+          self.isLoading = false;
         },
         error: err => {
           self.errorMsg = 'Invalid session token entered, please try again.'
+          self.isLoading = false;
         },
         complete: () => {}
       });
@@ -135,6 +140,9 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
           life: 5000
         });
       }
+    },
+    e => {
+      this.errorMsg = e.message;
     })
   }
 
@@ -142,6 +150,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
     console.log('Getting sessionId');
     const self = this;
 
+    self.isLoading = true;
     this.fbbService.getGameSessionParticipants(this.sessionId).subscribe({
       next: p => {
         console.log(p);
@@ -170,10 +179,12 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
   onPassClick() {
     const self = this;
     this.onHasAnswered();
+    this.isWaiting = true;
     this.fbbService.answerQuestion(this.sessionId, this.questionValue, 'PASS')
       .subscribe(
         p => {
           console.log(p);
+          self.isWaiting = false;
         },
         e => {
           self.messageService.add({
@@ -183,6 +194,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
             life: 5000
           });
           self.errorMsg = e.message;
+          self.isWaiting = false;
         },
         () => {
         }
@@ -192,10 +204,12 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
   onFizzClick() {
     this.onHasAnswered();
     const self = this;
+    self.isWaiting = true;
     this.fbbService.answerQuestion(this.sessionId, this.questionValue, 'FIZZ')
       .subscribe(
         p => {
           console.log(p);
+          self.isWaiting = false;
         },
         e => {
           self.messageService.add({
@@ -205,6 +219,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
             life: 5000
           });
           self.errorMsg = e.message;
+          self.isWaiting = false;
         },
         () => {
         }
@@ -214,9 +229,11 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
   onBuzzClick() {
     this.onHasAnswered();
     const self = this;
+    self.isWaiting = true;
     this.fbbService.answerQuestion(this.sessionId, this.questionValue, 'BUZZ')
       .subscribe(
         p => {
+          self.isWaiting = false;
           console.log(p);
         },
         e => {
@@ -227,6 +244,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
             life: 5000
           });
           self.errorMsg = e.message;
+          self.isWaiting = false;
         },
         () => {
         }
