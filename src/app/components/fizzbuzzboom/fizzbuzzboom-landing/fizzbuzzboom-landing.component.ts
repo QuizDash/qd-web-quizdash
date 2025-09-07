@@ -25,6 +25,7 @@ import {MessageService} from "primeng/api";
 export class FizzbuzzboomLandingComponent implements OnInit {
 
   isLoading = false;
+  isWaiting = false;
   showCreateNicknameDialog = false;
   authService: AuthenticationService;
 
@@ -52,14 +53,13 @@ export class FizzbuzzboomLandingComponent implements OnInit {
 
   onLoginChanged(login: ILogin): void {
     const self = this;
-    console.log('Login changed', login);
     self.login = login;
   }
 
   async initialise(): Promise<void> {
-    this.isLoading = true;
+    const self = this;
     await this.authService.authenticate();
-    this.isLoading = false;
+
   }
 
   onSessionEntered() {
@@ -68,23 +68,29 @@ export class FizzbuzzboomLandingComponent implements OnInit {
     this.sessionId = this.sessionId.trim().toUpperCase();
     self.errorMsg = '';
 
+    self.isWaiting = true;
+
     this.fbbService.getGameSession(this.sessionId)
       .subscribe({
         next: s => {
           console.log(s);
+          self.isWaiting = false;
           this.session = s;
           this.showCreateNicknameDialog = true;
         },
         error: err => {
           self.errorMsg = 'Invalid session token entered, please try again.'
+          self.isWaiting = false
         },
         complete: () => {}
       });
   }
 
   async joinGame() {
-    console.log('Clicked');
     const self = this;
+
+    self.isWaiting = true
+    console.log('Waiting...')
 
     this.fbbService.reserveSessionNickname(this.sessionId, this.nickname)
       .subscribe({
@@ -103,10 +109,12 @@ export class FizzbuzzboomLandingComponent implements OnInit {
                   maxRandomValue: self.session.maxRandomValue
                 }
               });
+              self.isWaiting = false
             },
             error: (err) => {
               // 👈 Will be triggered if WebSocket fails
               console.error('WebSocket connection failed:', err.message);
+              self.isWaiting = false
               alert('Connection error. The entered username may either be taken or is not allowed. Please try again.');
             },
             complete: () => {
@@ -116,6 +124,7 @@ export class FizzbuzzboomLandingComponent implements OnInit {
         },
         error: err => {
           console.log(err.message);
+          self.isWaiting = false
           self.messageService.add({
             severity: 'error',
             summary: 'Invalid nickname',

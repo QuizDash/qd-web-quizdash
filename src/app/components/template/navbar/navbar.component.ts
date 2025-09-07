@@ -8,7 +8,7 @@ import {BaseComponent} from "../../base.component";
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, NgIf],
+  imports: [CommonModule, RouterLink, NgIf],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
