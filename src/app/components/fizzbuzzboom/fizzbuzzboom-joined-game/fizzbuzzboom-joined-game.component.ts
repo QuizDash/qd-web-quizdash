@@ -102,7 +102,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
       else if(data.event && data.event == 'participantConnected' )  {
         const joinedUsername= data.content.nickname;
         if(!self.users.some(u => u.nickname == joinedUsername)) {
-          self.users.push({nickname: joinedUsername});
+          self.users = [...self.users, {nickname: joinedUsername}];
         }
       } else if(data.event && data.event == 'questionAnswered' && data.content.questionValue == self.questionValue  )  {
         if(data.content.isCorrect) {
@@ -122,6 +122,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
           });
         } else {
           self.answer = `Boom! ${data.content.nickname} is out.`
+          self.users = self.users.filter(a => a.nickname != data.content.nickname);
           self.messageService.add({
             severity: 'error',
             summary: 'Incorrect',
@@ -160,7 +161,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
             const u: IUserConnected = {
               nickname: p[i].participantId,
             }
-            self.users.push(u);
+            self.users = [...self.users, u];
           }
         }
         console.log('Users:', self.users);
