@@ -5,13 +5,17 @@ import {FizzBuzzBoomWsockService} from "../../../services/fizzbuzzboom-wsock.ser
 import {MessageService} from "primeng/api";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {ToastModule} from "primeng/toast";
 
 @Component({
   selector: 'app-fizzbuzzboom-load-test',
   standalone: true,
   imports: [
     NgIf,
-    FormsModule
+    FormsModule,
+    ProgressSpinnerModule,
+    ToastModule
   ],
   templateUrl: './fizzbuzzboom-load-test.component.html',
   styleUrl: './fizzbuzzboom-load-test.component.scss'
@@ -69,20 +73,6 @@ export class FizzbuzzboomLoadTestComponent {
         .subscribe({
           next: async s => {
             await self.wsService.connectWithToken(this.sessionId, nickname);
-
-            self.wsService.messages?.subscribe({
-              next: (msg: any) => {
-                console.log('Message received:', msg);
-              },
-              error: (err: any) => {
-                // 👈 Will be triggered if WebSocket fails
-                console.error('WebSocket connection failed:', err.message);
-                alert('Connection error. The entered username may either be taken or is not allowed. Please try again.');
-              },
-              complete: () => {
-                console.log('WebSocket closed');
-              }
-            });
           },
           error: err => {
             console.log(err.message);

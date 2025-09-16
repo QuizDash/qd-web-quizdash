@@ -73,7 +73,7 @@ export class FizzbuzzboomLandingComponent implements OnInit {
     this.fbbService.getGameSession(this.sessionId)
       .subscribe({
         next: s => {
-          console.log(s);
+          // console.log(s);
           self.isWaiting = false;
           this.session = s;
           this.showCreateNicknameDialog = true;
@@ -90,7 +90,6 @@ export class FizzbuzzboomLandingComponent implements OnInit {
     const self = this;
 
     self.isWaiting = true
-    console.log('Waiting...')
 
     this.fbbService.reserveSessionNickname(this.sessionId, this.nickname)
       .subscribe({
@@ -99,7 +98,6 @@ export class FizzbuzzboomLandingComponent implements OnInit {
 
           self.wsService.messages?.subscribe({
             next: (msg) => {
-              console.log('Message received:', msg);
               localStorage.setItem('nickname', this.nickname);
               this.router.navigate(['fizzbuzzboom/join-game', this.sessionId, this.nickname], {
                 queryParams: {

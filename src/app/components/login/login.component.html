@@ -1,13 +1,14 @@
 <div class="container page">
   <div class="row top-buffer-x2">
-    <div class="col-3"></div>
-    <div class="col-6">
+    <div class="col-0 col-md-3"></div>
+    <div class="col-9 col-md-6">
 
       <div class="row">
         <div class="col-12 text-center">
           <span class="hint">Sign-in or submit a request for an account here.</span>
         </div>
       </div>
+
       <div class="row top-buffer">
         <div class="col-12">
           <amplify-authenticator [signUpAttributes]="['nickname', 'given_name', 'family_name']"  [hideSignUp]="true">
@@ -17,12 +18,18 @@
               let-signOut="signOut"
             >
               <button (click)="signOut()">Sign Out</button>
+
             </ng-template>
           </amplify-authenticator>
         </div>
       </div>
 
-
+    </div>
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-xs-9 col-md-9 col-lg-6 top-buffer">
+        <span class="hint"><i>Note: QuizDash is currently running as a demo, and is not publicly available for sign-up. Please email info&#64;cirruscape.com if you would like to know more.</i></span>
+      </div>
     </div>
   </div>
 </div>
