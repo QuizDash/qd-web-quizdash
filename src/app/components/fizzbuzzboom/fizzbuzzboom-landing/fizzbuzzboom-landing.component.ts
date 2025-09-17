@@ -73,10 +73,14 @@ export class FizzbuzzboomLandingComponent implements OnInit {
     this.fbbService.getGameSession(this.sessionId)
       .subscribe({
         next: s => {
-          // console.log(s);
+          console.log(s);
           self.isWaiting = false;
-          this.session = s;
-          this.showCreateNicknameDialog = true;
+          if(s.status != 'INITIAL') {
+            self.errorMsg = 'A session for the entered token has already run, please try again.'
+          } else {
+            this.session = s;
+            this.showCreateNicknameDialog = true;
+          }
         },
         error: err => {
           self.errorMsg = 'Invalid session token entered, please try again.'

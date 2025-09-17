@@ -2,14 +2,14 @@
 <span class="alert">{{errorMsg}}</span>
 <span class="info">{{infoMsg}}</span>
 
-<div class="row">
-  <div class="col-5">&nbsp;</div>
-  <div class="col-5 text-end">
-    <span class="participant">User: {{myNickname}}</span>
-  </div>
-</div>
-<div *ngIf="!isLoading" class="container-fluid page">
 
+<div *ngIf="!isLoading" class="container-fluid page">
+  <div class="row">
+    <div class="col-9 col-md-10">&nbsp;</div>
+    <div class="col-3 col-md-2">
+      <span class="participant">User: {{myNickname}}</span>
+    </div>
+  </div>
   <div class="row top-buffer text-right">
     <div class="col-6 text-center">
       <h1>Starting Game</h1>
@@ -53,17 +53,17 @@
             </div>
 
             <div *ngIf="isTargetUser && !hasAnswered" class="col-4 d-grid gap-1">
-              <button class="btn-lg btn-outline-primary" (click)="onFizzClick()">Fizz</button>
-              <button class="btn-lg btn-outline-secondary" (click)="onBuzzClick()">Buzz</button>
-              <button class="btn-lg btn-outline-danger" (click)="onFizzBuzzClick()">Fizz Buzz</button>
-              <button class="btn-lg btn-outline-success" (click)="onPassClick()">Pass</button>
+              <button class="btn btn-lg btn-outline-primary" (click)="onFizzClick()">Fizz</button>
+              <button class="btn btn-lg btn-outline-secondary" (click)="onBuzzClick()">Buzz</button>
+              <button class="btn btn-lg btn-outline-danger" (click)="onFizzBuzzClick()">Fizz Buzz</button>
+              <button class="btn btn-lg btn-outline-success" (click)="onPassClick()">Pass</button>
             </div>
 
             <div *ngIf="!isTargetUser || hasAnswered" class="col-4 d-grid gap-1">
-              <button class="btn-lg btn-outline-secondary" disabled>Fizz</button>
-              <button class="btn-lg btn-outline-secondary" disabled>Buzz</button>
-              <button class="btn-lg btn-outline-secondary" disabled>Fizz Buzz</button>
-              <button class="btn-lg btn-outline-secondary" disabled>Pass</button>
+              <button class="btn btn-lg btn-outline-secondary" disabled>Fizz</button>
+              <button class="btn btn-lg btn-outline-secondary" disabled>Buzz</button>
+              <button class="btn btn-lg btn-outline-secondary" disabled>Fizz Buzz</button>
+              <button class="btn btn-lg btn-outline-secondary" disabled>Pass</button>
             </div>
 
           </div>
