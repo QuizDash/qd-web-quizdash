@@ -13,6 +13,9 @@ import {
 import {
   FizzBuzzBoomJoinedGameComponent
 } from './components/fizzbuzzboom/fizzbuzzboom-joined-game/fizzbuzzboom-joined-game.component';
+import {
+  FizzbuzzboomLoadTestComponent
+} from "./components/tests/fizzbuzzboom-load-test/fizzbuzzboom-load-test.component";
 
 export const routes: Routes = [
   {
@@ -34,6 +37,10 @@ export const routes: Routes = [
   {
     path: 'fizzbuzzboom/join-game/:sessionId/:nickname',
     component: FizzBuzzBoomJoinedGameComponent
+  },
+  {
+    path: 'tests/fizzbuzzboomloadtest',
+    component: FizzbuzzboomLoadTestComponent, canActivate: [authGuard]
   },
   {
     path: 'login', component: LoginComponent

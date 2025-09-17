@@ -65,7 +65,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
     this.fbbService.getGameSession(this.sessionId)
       .subscribe({
         next: s => {
-          console.log(s);
+          // console.log(s);
           self.session = s;
           self.config = { leftTime: self.session.timeLimitSeconds, demand: true };
           self.isLoading = false;
@@ -78,7 +78,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
       });
 
     this.wsService?.subject?.subscribe(msg => {
-      console.log(msg);
+      // console.log(msg);
       const data = JSON.parse(msg.data);
       console.log(data);
       if(data.event && data.event == 'question' && !self.isGameWon) {
@@ -87,8 +87,8 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
         self.questionValue = qnEvent.content.question;
         self.targetUser = qnEvent.content.targetUser.participantNickname;
 
-        console.log(`TargetUser: ${self.targetUser}`)
-        console.log(`myNickname: ${self.myNickname}`)
+        // console.log(`TargetUser: ${self.targetUser}`)
+        // console.log(`myNickname: ${self.myNickname}`)
         if(self.targetUser == self.myNickname) {
           self.isTargetUser = true;
           self.countdown.restart();
@@ -102,7 +102,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
       else if(data.event && data.event == 'participantConnected' )  {
         const joinedUsername= data.content.nickname;
         if(!self.users.some(u => u.nickname == joinedUsername)) {
-          self.users.push({nickname: joinedUsername});
+          self.users = [...self.users, {nickname: joinedUsername}];
         }
       } else if(data.event && data.event == 'questionAnswered' && data.content.questionValue == self.questionValue  )  {
         if(data.content.isCorrect) {
@@ -122,6 +122,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
           });
         } else {
           self.answer = `Boom! ${data.content.nickname} is out.`
+          self.users = self.users.filter(a => a.nickname != data.content.nickname);
           self.messageService.add({
             severity: 'error',
             summary: 'Incorrect',
@@ -153,17 +154,17 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
     self.isLoading = true;
     this.fbbService.getGameSessionParticipants(this.sessionId).subscribe({
       next: p => {
-        console.log(p);
+        // console.log(p);
         for(let i = 0; i < p.length; i++) {
 
           if(!self.users.some(u => u.nickname == p[i].participantId)) {
             const u: IUserConnected = {
               nickname: p[i].participantId,
             }
-            self.users.push(u);
+            self.users = [...self.users, u];
           }
         }
-        console.log('Users:', self.users);
+        // console.log('Users:', self.users);
         self.errorMsg = '';
         self.isLoading = false;
       },
@@ -183,7 +184,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
     this.fbbService.answerQuestion(this.sessionId, this.questionValue, 'PASS')
       .subscribe(
         p => {
-          console.log(p);
+          // console.log(p);
           self.isWaiting = false;
         },
         e => {
@@ -208,7 +209,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
     this.fbbService.answerQuestion(this.sessionId, this.questionValue, 'FIZZ')
       .subscribe(
         p => {
-          console.log(p);
+          //console.log(p);
           self.isWaiting = false;
         },
         e => {
@@ -279,8 +280,6 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
   }
 
   onCountdownEvent(event?: any) {
-    console.log('onCountdownEvent');
-    console.log(event);
     const self = this;
     if(event.action == 'done' && self.isTargetUser && !self.hasAnswered) {
       console.log(`Boom, you're out`);
@@ -288,7 +287,7 @@ export class FizzBuzzBoomJoinedGameComponent implements OnInit {
       this.fbbService.answerQuestion(this.sessionId, this.questionValue, 'TIMEOUT')
         .subscribe(
           p => {
-            console.log(p);
+            // console.log(p);
           },
           e => {
             self.messageService.add({

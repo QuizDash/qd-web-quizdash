@@ -82,7 +82,7 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
 
   onLoginChanged(login: ILogin): void {
     const self = this;
-    console.log('Login changed', login);
+    // console.log('Login changed', login);
     self.login = login;
   }
 
@@ -93,7 +93,6 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
     this.fbbService.createGameSession(this.fizzMultiple, this.buzzMultiple, this.isRandomQuestion, this.randomMaxValue, this.timeLimitSeconds)
       .subscribe(
         p => {
-          console.log(p);
           self.isWaiting = false;
           self.errorMsg = '';
           self.sessionId = p.sessionId;
@@ -101,9 +100,7 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
           this.wsService.connectWithToken(this.sessionId, 'Host').then(x=> {
             this?.wsService?.subject?.subscribe(msg => {
 
-              console.log(msg);
               const data = JSON.parse(msg.data);
-              console.log(data);
               if(data.event && data.event == 'question') {
                 const qnEvent: IQuestionPosted = data;
                 self.questionValue = qnEvent.content.question;
@@ -122,7 +119,6 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
                   self.answer = `Boom! ${data.content.nickname} is out.`;
                   self.users = self.users.filter(a => a.nickname != data.content.nickname);
                 }
-                console.log('Clicking');
                 this.onStartClick();
               }
               else if(data.event && data.event == 'gameWon') {
@@ -197,17 +193,14 @@ export class FizzBuzzBoomCreateGameComponent implements OnInit {
   }
 
   onCountdownEvent(event?: any) {
-    console.log('onCountdownEvent');
-    console.log(event);
     const self = this;
 
     if(event.action == 'done') {
-      console.log(this.targetUser);
       if(this.targetUser || '' != '')  {
         this.fbbService.timeoutUser(this.sessionId, this.questionValue, this.targetUser)
           .subscribe({
               next: p => {
-                console.log(p);
+                // console.log(p);
               },
               error: e => {
                 self.messageService.add({

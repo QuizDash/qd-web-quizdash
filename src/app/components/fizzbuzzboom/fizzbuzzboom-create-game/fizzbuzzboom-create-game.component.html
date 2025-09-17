@@ -73,8 +73,8 @@
 
     </div>
     <div class="col-4">
-      <strong>Joined Users:</strong>
-      <p-listbox [options]="users" optionLabel="nickname" [listStyle]="{'max-height':'250px'}"
+      <strong>Joined Users ({{users?.length}}):</strong>
+      <p-listbox [options]="users" optionLabel="nickname" [listStyle]="{'max-height':'400px'}"
                  emptyMessage="Waiting for users..."></p-listbox>
 
     </div>

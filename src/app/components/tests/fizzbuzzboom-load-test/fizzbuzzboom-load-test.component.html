@@ -1,0 +1,45 @@
+<span class="answer">{{answer}}</span>
+<span class="alert">{{errorMsg}}</span>
+<span class="info">{{infoMsg}}</span>
+
+<div *ngIf="!isLoading" class="container">
+
+  <div class="card">
+    <div class="card-header">
+      <h2>Load test</h2>
+    </div>
+    <div class="card-body">
+      <div class="row top-buffer">
+        <strong class="col-3">Session Token:</strong>
+        <div class="col-4">
+          <input type="text" class="form-control form-control-lg"
+                 [(ngModel)]="sessionId" id="sessionId"/>
+        </div>
+      </div>
+      <div class="row top-buffer">
+        <strong class="col-3">User count:</strong>
+        <div class="col-4">
+          <input type="text" class="form-control form-control-lg"
+                 [(ngModel)]="userCount" id="userCount"/>
+        </div>
+      </div>
+      <div class="row top-buffer">
+        <strong class="col-3">Delay (ms):</strong>
+        <div class="col-4">
+          <input type="text" class="form-control form-control-lg"
+                 [(ngModel)]="delayMs" id="delayMs"/>
+        </div>
+
+      </div>
+
+      <div class="row top-buffer">
+        <div class="col-3 d-grid">
+          <button type="button" class="btn btn-secondary"  (click)="onSessionEntered()" [disabled]="isLoading">Start</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<p-progressSpinner *ngIf="isLoading || isWaiting" class="qd-center"></p-progressSpinner>
+<p-toast position="top-left" class="custom-toast"></p-toast>
