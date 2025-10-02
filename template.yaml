@@ -176,7 +176,7 @@ Resources:
     DependsOn: CloudFrontDistribution
     Properties:
       HostedZoneId:
-        Fn::ImportValue: !Sub "${InfraBaseCFStackName}:HostedZoneId"
+        Fn::ImportValue: !Sub "${InfraBaseCFStackName}:HostedZone:Id"
       Name: !Sub "${WebDomainName}"
       Type: A
       AliasTarget:
@@ -188,7 +188,7 @@ Resources:
     DependsOn: CloudFrontDistribution
     Properties:
       HostedZoneId:
-        Fn::ImportValue: !Sub "${InfraBaseCFStackName}:HostedZoneId"
+        Fn::ImportValue: !Sub "${InfraBaseCFStackName}:HostedZone:Id"
       Name: !Sub "${WebDomainName}"
       Type: AAAA
       AliasTarget:
@@ -203,7 +203,7 @@ Resources:
       DomainValidationOptions:
         - DomainName: !Sub "${WebDomainName}"
           HostedZoneId:
-            Fn::ImportValue: !Sub "${InfraBaseCFStackName}:HostedZoneId"
+            Fn::ImportValue: !Sub "${InfraBaseCFStackName}:HostedZone:Id"
       ValidationMethod: DNS
       Tags:
         - Key: "Name"
